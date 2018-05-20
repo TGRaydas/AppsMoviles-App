@@ -26,10 +26,27 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getProducts();
+                login();
             }
         });
 
+    }
+    public void login(){
+        try{
+            networkManager.login(new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+        }catch (JSONException e){
+
+        }
     }
 
     public void getProducts()

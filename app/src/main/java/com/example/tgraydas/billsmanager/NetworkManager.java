@@ -25,9 +25,9 @@ public class NetworkManager {
     private RequestQueue mRequestQueue;
     private static Context mCtx;
 
-    private static final String BASE_URL = "http://18.188.109.236/";
+    private static final String BASE_URL = "http://192.168.43.222:3000/";
 
-    private static String token =  "";
+    private static String token =  "WENA PETER";
 
     private NetworkManager(Context context){
         mCtx = context;
@@ -50,10 +50,10 @@ public class NetworkManager {
         return mRequestQueue;
     }
 
-    public void login(String username, String password, final Response.Listener<JSONObject> responseListener,
+    public void login(final Response.Listener<JSONObject> responseListener,
                       Response.ErrorListener errorListener) throws JSONException {
 
-        String url = BASE_URL + "";
+        String url = BASE_URL + "authenticate";
 
         JSONObject payload = new JSONObject();
         payload.put("email", "user");
@@ -100,16 +100,26 @@ public class NetworkManager {
 
     private void makeApiCall(int method, String url, JSONObject payload, Response.Listener<JSONObject> listener,
                              Response.ErrorListener errorListener){
+        try{
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("head","peter");
+            jsonObject.put("haaaead","pesdsr");
+            url += "?object=" + jsonObject.toString();
+            JsonObjectArrayRequest jsonObjectRequest = new JsonObjectArrayRequest
+                    (method, url, payload, listener, errorListener){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", token);
+                    return headers;
+                }
+            };
+            mRequestQueue.add(jsonObjectRequest);
 
-        JsonObjectArrayRequest jsonObjectRequest = new JsonObjectArrayRequest
-                (method, url, payload, listener, errorListener){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", token);
-                return headers;
-            }
-        };
-        mRequestQueue.add(jsonObjectRequest);
+        } catch (JSONException e){
+
+        }
+
+
     }
 }
