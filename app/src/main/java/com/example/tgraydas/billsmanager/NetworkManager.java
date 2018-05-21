@@ -25,9 +25,10 @@ public class NetworkManager {
     private RequestQueue mRequestQueue;
     private static Context mCtx;
 
-    private static final String BASE_URL = "http://18.188.109.236/";
 
-    private static String token =  "WENA PETER";
+    private static final String BASE_URL = "http://18.188.109.236/";
+    
+    private static String token =  "";
 
     private NetworkManager(Context context){
         mCtx = context;
@@ -50,6 +51,10 @@ public class NetworkManager {
         return mRequestQueue;
     }
 
+    public void PrintToken(){
+        System.out.print(this.token);
+    }
+
     public void login(final Response.Listener<JSONObject> responseListener,
                       Response.ErrorListener errorListener) throws JSONException {
 
@@ -58,16 +63,14 @@ public class NetworkManager {
         JSONObject payload = new JSONObject();
         payload.put("email", "user");
         payload.put("password", "123123");
-
+        payload.put("token", token);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url, payload, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-
-                        JSONObject headers = response.optJSONObject("headers");
-                        token = headers.optString("Authorization", "");
+                        token = response.optString("Authenticate");
                         responseListener.onResponse(response);
                     }
                 }, errorListener){
