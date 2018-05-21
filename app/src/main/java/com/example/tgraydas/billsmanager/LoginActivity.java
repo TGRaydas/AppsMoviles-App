@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         final Context context = getApplicationContext();
-        SharedPreferences sharedPreferences;
+        final SharedPreferences sharedPreferences;
 
         final EditText loginEmail = (EditText) findViewById(R.id.login_email);
         final EditText loginPassword = (EditText) findViewById(R.id.login_password);
@@ -47,14 +47,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 networkManager = NetworkManager.getInstance(getApplicationContext());
-                String email = loginEmail.getText().toString();
-                String password = loginPassword.getText().toString();
-
+                //String email = loginEmail.getText().toString();
+                //String password = loginPassword.getText().toString();
                 try {
 
                     networkManager.login(new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("token", "login");
+                            editor.commit();
                             Toast initialized_message =
                                     Toast.makeText(getApplicationContext(),
                                             "Has iniciado secion :D", Toast.LENGTH_SHORT);
@@ -62,23 +64,32 @@ public class LoginActivity extends AppCompatActivity {
                             initialized_message.show();
                             Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
                             LoginActivity.this.startActivity(userAreaIntent);
+                            finish();
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", "");
+                            editor.putString("password", "");
+                            editor.putString("token", "");
+                            editor.commit();
                             Toast initialized_message =
                                     Toast.makeText(getApplicationContext(),
                                             "VOLLEY ERROR: " + error, Toast.LENGTH_SHORT);
-
                             initialized_message.show();
                             System.out.println(error);
                         }
                     });
                 } catch (JSONException e){
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", "");
+                    editor.putString("password", "");
+                    editor.putString("token", "");
+                    editor.commit();
                     Toast initialized_message =
                             Toast.makeText(getApplicationContext(),
                                     "ERROR: JSON Exception ->" + e, Toast.LENGTH_SHORT);
-
                     initialized_message.show();
                     e.printStackTrace();
                 }

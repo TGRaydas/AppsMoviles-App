@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(Objects.equals(token, "")) {
             /* descomentar cuando este listo el login */
-            //Intent goToLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
-            //MainActivity.this.startActivity(goToLoginIntent);
-            //MainActivity.this.finish();
+            Intent goToLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(goToLoginIntent);
+            MainActivity.this.finish();
             Toast initialized_message =
                     Toast.makeText(getApplicationContext(),
-                            "No has iniciado sesion!" + ("\ud83d\ude01"), Toast.LENGTH_SHORT);
+                            "Debes Iniciar Sesion!" + ("\ud83d\ude01"), Toast.LENGTH_SHORT);
 
             initialized_message.show();
         }

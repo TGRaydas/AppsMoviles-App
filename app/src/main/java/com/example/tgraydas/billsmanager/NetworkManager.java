@@ -27,7 +27,7 @@ public class NetworkManager {
 
 
     private static final String BASE_URL = "http://18.188.109.236/";
-    
+
     private static String token =  "";
 
     private NetworkManager(Context context){
