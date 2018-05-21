@@ -25,7 +25,7 @@ public class NetworkManager {
     private RequestQueue mRequestQueue;
     private static Context mCtx;
 
-    private static final String BASE_URL = "http://18.188.109.236/";
+    private static final String BASE_URL = "http://192.168.43.222:3000/";
 
     private static String token =  "WENA PETER";
 
