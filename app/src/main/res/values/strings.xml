@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BillsManager</string>
+    <string name="loginpreferences">loginpreferences</string>
 </resources>
