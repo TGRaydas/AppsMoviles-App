@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Tables">
+        <menu>
+            <item
+                android:id="@+id/nav_all_tables"
+                android:icon="@drawable/ic_restaurant_table_and_chairs"
+                android:title="All Tables" />
+            <item
+                android:id="@+id/nav_waiter_tables"
+                android:icon="@drawable/ic_waiter_serving_a_drink_on_a_tray"
+                android:title="My Tables" />
+        </menu>
+    </item>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_sign_out_option"
+            android:title="Logout" />
+    </group>
+
+</menu>

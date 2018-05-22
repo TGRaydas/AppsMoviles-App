@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -47,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 networkManager = NetworkManager.getInstance(getApplicationContext());
-                //String email = loginEmail.getText().toString();
-                //String password = loginPassword.getText().toString();
+                String email = loginEmail.getText().toString();
+                String password = loginPassword.getText().toString();
                 try {
 
                     networkManager.login(new Response.Listener<JSONObject>() {
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.commit();
                             Toast initialized_message =
                                     Toast.makeText(getApplicationContext(),
-                                            "Has iniciado secion :D", Toast.LENGTH_SHORT);
+                                            "Has iniciado sesion :D", Toast.LENGTH_SHORT);
 
                             initialized_message.show();
                             Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
