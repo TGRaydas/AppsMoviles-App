@@ -30,6 +30,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 import static com.example.tgraydas.billsmanager.R.string.navigation_drawer_close;
@@ -47,6 +52,9 @@ implements NavigationView.OnNavigationItemSelectedListener{
         setSupportActionBar(toolbar);
         networkManager = NetworkManager.getInstance(this);
         Button button = findViewById(R.id.button);
+        ArrayList<Product> productList = new ArrayList<>();
+        getProducts(productList);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +101,28 @@ implements NavigationView.OnNavigationItemSelectedListener{
             initialized_message.show();
         }
     }
+    public void killBill(Bill bill){
+
+    }
+
+    public void createBill(final ArrayList<Product> products, final Desk desk, final ArrayList<Bill> bill) throws JSONException {
+        networkManager.createBill(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    Bill bills = new Bill(response.getInt("id"), desk, products);
+                    bill.add(bills);
+                } catch (JSONException e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, products, desk);
+    }
 
     public void login(){
         try{
@@ -112,11 +142,25 @@ implements NavigationView.OnNavigationItemSelectedListener{
         }
     }
 
-    public void getProducts() {
+    public void getProducts(final ArrayList<Product> productList) {
         networkManager.getProducts(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                    System.out.println(response);
+                try {
+                    JSONArray data = response.optJSONArray("0");
+                    for (int i = 0; i < data.length(); i++){
+                        int id = data.getJSONObject(i).optInt("id");
+                        String name = data.getJSONObject(i).optString("name");
+                        int price = data.getJSONObject(i).optInt("price");
+                        String detail = data.getJSONObject(i).optString("detail");
+                        Product product = new Product(id, price, name, detail);
+                        productList.add(product);
+                    }
+
+                } catch (JSONException e) {
+
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -124,7 +168,36 @@ implements NavigationView.OnNavigationItemSelectedListener{
                 System.out.println(error.getMessage());
             }
         });
+        while()
     }
+
+    public void getDesks(final ArrayList<Desk> deskList){
+        networkManager.getProducts(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONArray data = response.optJSONArray("0");
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        int id = data.getJSONObject(i).optInt("id");
+                        int number = data.getJSONObject(i).optInt("number");
+                        Desk desk = new Desk(id, number);
+                        deskList.add(desk);
+                    } catch (JSONException e) {
+
+                    }
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }
+
+
 
 
     @Override

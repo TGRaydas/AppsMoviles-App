@@ -12,11 +12,14 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NetworkManager {
@@ -26,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    private static final String BASE_URL = "http://18.188.109.236/";
+    private static final String BASE_URL = "http://192.168.0.17:3000/";
 
     private static String token =  "";
 
@@ -93,6 +96,19 @@ public class NetworkManager {
 
         mRequestQueue.add(jsonObjectRequest);
     }
+    public void killBill(Response.Listener<JSONObject> listener,
+                         Response.ErrorListener errorListener, Bill bill) throws JSONException {
+        String url = BASE_URL + "kill_bill";
+        JSONObject obj = new JSONObject();
+        obj.put("id", bill.id);
+        makeApiCall(Request.Method.POST, url, obj,listener, errorListener);
+    }
+    public void getDesks(Response.Listener<JSONObject> listener,
+                            Response.ErrorListener errorListener){
+
+        String url = BASE_URL + "desks";
+        makeApiCall(Request.Method.GET, url, null,listener, errorListener);
+    }
 
     public void getProducts(Response.Listener<JSONObject> listener,
                             Response.ErrorListener errorListener){
@@ -100,14 +116,27 @@ public class NetworkManager {
         String url = BASE_URL + "products";
         makeApiCall(Request.Method.GET, url, null,listener, errorListener);
     }
+    public void createBill(Response.Listener<JSONObject> listener,
+                           Response.ErrorListener errorListener, ArrayList<Product> products, Desk desk) throws JSONException {
+        JSONObject payload = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < products.size(); i++){
+            JSONObject obj = new JSONObject();
+            obj.put("id", desk.id);
+            array.put(obj);
+        }
 
+        String url = BASE_URL + "create_bill";
+        JSONObject obj = new JSONObject();
+        obj.put("id", desk.id);
+        obj.put("number", desk.id);
+        payload.put("desk", obj);
+        payload.put("products", array);
+        makeApiCall(Request.Method.POST, url, payload, listener, errorListener);
+    }
     private void makeApiCall(int method, String url, JSONObject payload, Response.Listener<JSONObject> listener,
                              Response.ErrorListener errorListener){
-        try{
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("head","peter");
-            jsonObject.put("haaaead","pesdsr");
-            url += "?object=" + jsonObject.toString();
+
             JsonObjectArrayRequest jsonObjectRequest = new JsonObjectArrayRequest
                     (method, url, payload, listener, errorListener){
                 @Override
@@ -119,10 +148,7 @@ public class NetworkManager {
             };
             mRequestQueue.add(jsonObjectRequest);
 
-        } catch (JSONException e){
-
-        }
-
-
     }
+
+
 }
