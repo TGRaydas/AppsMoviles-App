@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 networkManager = NetworkManager.getInstance(getApplicationContext());
-                String email = loginEmail.getText().toString();
+                final String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
                 try {
 
@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast initialized_message =
                                     Toast.makeText(getApplicationContext(),
                                             "Has iniciado sesion :D", Toast.LENGTH_SHORT);
-
                             initialized_message.show();
+
                             Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
                             LoginActivity.this.startActivity(userAreaIntent);
                             finish();

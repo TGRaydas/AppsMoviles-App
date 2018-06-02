@@ -47,6 +47,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
     private NetworkManager networkManager;
     private SharedPreferences sharedPreferences;
+    private TextView navHead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
             initialized_message.show();
         }
-
+        setTitle("Bills Manager");
 
 
     }
