@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.tgraydas.billsmanager.TablesFragment.OnListFragmentInteractionListener;
+import com.example.tgraydas.billsmanager.AllTablesFragment.OnListFragmentInteractionListener;
 import com.example.tgraydas.billsmanager.dummy.DummyContent.DummyItem;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,26 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
-import static com.example.tgraydas.billsmanager.R.string.navigation_drawer_close;
-
 public class MainActivity extends AppCompatActivity
-implements NavigationView.OnNavigationItemSelectedListener{
+implements NavigationView.OnNavigationItemSelectedListener {
+
     private NetworkManager networkManager;
     private SharedPreferences sharedPreferences;
 
@@ -72,6 +66,15 @@ implements NavigationView.OnNavigationItemSelectedListener{
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View fragmentContainer = findViewById(R.id.fragment_container);
+        if (fragmentContainer != null){
+
+            if(savedInstanceState != null){
+                return;
+            }
+
+
+        }
 
 
         /*  LOGIN */
@@ -132,32 +135,36 @@ implements NavigationView.OnNavigationItemSelectedListener{
 
         int id = item.getItemId();
 
-        Fragment goToFragment = null;
-        boolean selectedFragment = false;
-
-        if(id == R.id.nav_all_tables){
-            goToFragment = new TablesFragment();
-            selectedFragment = true;
-        } else if (id == R.id.nav_waiter_tables){
-            goToFragment = new OrderTableFragment();
-            selectedFragment = true;
-        } else if (id == R.id.nav_logout){
-            /* LOGOUT */
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("token");
-            editor.commit();
-            Intent goToLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
-            MainActivity.this.startActivity(goToLoginIntent);
-            finish();
+        if(findViewById(R.id.fragment_container) != null){
+            if (id == R.id.nav_all_tables) {
+                AllTablesFragment allTablesFragment = new AllTablesFragment();
+                allTablesFragment.setArguments(getIntent().getExtras());
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.fragment_container, allTablesFragment, allTablesFragment.toString());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } else if (id == R.id.nav_waiter_tables) {
+                MyTablesFragment myTablesFragment = new MyTablesFragment();
+                myTablesFragment.setArguments(getIntent().getExtras());
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.fragment_container, myTablesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } else if (id == R.id.nav_logout) {
+                    /* LOGOUT */
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("token");
+                editor.commit();
+                Intent goToLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                MainActivity.this.startActivity(goToLoginIntent);
+                finish();
+            }
         }
-
-        if (selectedFragment){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content, goToFragment).commit();
-        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
