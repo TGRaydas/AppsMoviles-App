@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -68,12 +70,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
         navigationView.setNavigationItemSelectedListener(this);
         View fragmentContainer = findViewById(R.id.fragment_container);
         if (fragmentContainer != null){
-
             if(savedInstanceState != null){
                 return;
             }
-
-
         }
 
 
@@ -95,6 +94,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
             initialized_message.show();
         }
+
+
+
     }
 
     public void login(){
