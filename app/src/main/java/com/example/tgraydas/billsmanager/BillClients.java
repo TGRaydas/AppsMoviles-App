@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class BillClients extends AppCompatActivity {
     NetworkManager networkManager;
+    Desk desk;
     ProductsGridAdapter productsGridAdapter;
     ProductsSpinnerAdapter productsSpinnerAdapter;
     ArrayList<Product> billProductList = new ArrayList<>();
@@ -33,7 +34,7 @@ public class BillClients extends AppCompatActivity {
         GridView gridView = findViewById(R.id.gridViewProducts);
         final Spinner spinner = findViewById(R.id.spinner);
         getProducts(productList, gridView, spinner);
-        productsGridAdapter = new ProductsGridAdapter(getApplicationContext(), billProductList);
+        productsGridAdapter = new ProductsGridAdapter(this, billProductList);
         gridView.setAdapter(productsGridAdapter);
         Button button = findViewById(R.id.Add_product_to_bill);
         button.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +80,11 @@ public class BillClients extends AppCompatActivity {
         billProductList.add((Product) spinner.getSelectedItem());
         productsGridAdapter.notifyDataSetChanged();
 
+    }
+
+    public void removeProductFromBill(int position){
+        billProductList.remove(position);
+        productsGridAdapter.notifyDataSetChanged();
     }
 
 

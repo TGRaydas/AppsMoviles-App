@@ -1,9 +1,11 @@
 package com.example.tgraydas.billsmanager;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.StringRequest;
@@ -43,7 +45,7 @@ public class ProductsGridAdapter extends BaseAdapter {
 
     // 5
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View gridView = convertView;
         Product product = products.get(position);
         if (convertView == null) {
@@ -55,6 +57,15 @@ public class ProductsGridAdapter extends BaseAdapter {
             textView.setText(product.detail);
             textView = gridView.findViewById(R.id.price);
             String price_info = "Price: $" + Integer.toString((product.price));
+            Button button = gridView.findViewById(R.id.delete_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if( mContext instanceof BillClients) {
+                        ((BillClients) mContext).removeProductFromBill(position);
+                    }
+                }
+            });
             textView.setText(price_info);
             return gridView;
 
