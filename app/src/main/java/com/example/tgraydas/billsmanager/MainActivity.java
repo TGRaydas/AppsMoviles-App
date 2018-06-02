@@ -58,7 +58,9 @@ implements NavigationView.OnNavigationItemSelectedListener,
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                Intent intent = new Intent(getApplicationContext(), BillClients.class);
+
+                startActivity(intent);
             }
         });
 
