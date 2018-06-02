@@ -42,7 +42,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener,
-        MyTablesFragment.OnMyTablesFragmentInteractionListener
+        AllTablesFragment.takeTable
 {
 
     private NetworkManager networkManager;
@@ -63,7 +63,9 @@ implements NavigationView.OnNavigationItemSelectedListener,
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                Intent intent = new Intent(getApplicationContext(), BillClients.class);
+
+                startActivity(intent);
             }
         });
 
@@ -251,7 +253,9 @@ implements NavigationView.OnNavigationItemSelectedListener,
     }
 
     @Override
-    public void onMyTablesFragmentInteraction(Uri uri) {
-
+    public void takeTableListener(Desk desk) {
+        Intent goToOrderWithTable = new Intent(getApplicationContext(), BillClients.class);
+        goToOrderWithTable.putExtra("Desk", desk.id);
+        startActivity(goToOrderWithTable);
     }
 }

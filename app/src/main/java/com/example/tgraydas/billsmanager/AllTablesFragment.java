@@ -23,9 +23,16 @@ public class AllTablesFragment extends Fragment{
     private Context context;
 
     private OnListFragmentInteractionListener mListener;
+    private takeTable takeTableListener;
 
+    /* CONSTRUCTOR */
     public AllTablesFragment() {
 
+    }
+
+    /* Get takeTableListener */
+    public takeTable getTakeTableListener() {
+        return takeTableListener;
     }
 
     @Override
@@ -45,6 +52,10 @@ public class AllTablesFragment extends Fragment{
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        if (context instanceof takeTable){
+            takeTableListener = (takeTable) context;
+
+        }
     }
 
     @Override
@@ -62,5 +73,10 @@ public class AllTablesFragment extends Fragment{
         ListAdapter listAdapter = new TablesListAdapter(this, context, tables);
         ListView tablesListView = getView().findViewById(R.id.tables_list_view);
         tablesListView.setAdapter(listAdapter);
+    }
+
+    /* Take Table Interface */
+    public interface takeTable{
+        void takeTableListener(Desk desk);
     }
 }

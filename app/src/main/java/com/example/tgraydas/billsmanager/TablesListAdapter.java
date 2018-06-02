@@ -18,9 +18,9 @@ import java.util.List;
 
 public class TablesListAdapter extends ArrayAdapter<Desk> {
 
-    private  Fragment allTablesFragment;
+    private  AllTablesFragment allTablesFragment;
 
-    public TablesListAdapter(@NonNull Fragment allTablesFragment, Context context, @NonNull List<Desk> tables) {
+    public TablesListAdapter(@NonNull AllTablesFragment allTablesFragment, Context context, @NonNull List<Desk> tables) {
         super(context, R.layout.table_line, tables);
         this.allTablesFragment = allTablesFragment;
     }
@@ -47,6 +47,8 @@ public class TablesListAdapter extends ArrayAdapter<Desk> {
                         Toast.makeText(getContext(),
                                 "Initialize TakeOrderActivity", Toast.LENGTH_SHORT);
                 initialized_message.show();
+                allTablesFragment.getTakeTableListener().takeTableListener(desk);
+
             }
         });
 

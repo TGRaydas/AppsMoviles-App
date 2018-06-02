@@ -70,9 +70,9 @@ public class MyTablesFragment extends Fragment {
     }
 
     public void populateMyTables(List<Desk> tables){
-        ListAdapter listAdapter = new TablesListAdapter(this, context, tables);
-        ListView tablesListView = getView().findViewById(R.id.tables_list_view);
-        tablesListView.setAdapter(listAdapter);
+        //ListAdapter listAdapter = new TablesListAdapter(this, context, tables);
+        //ListView tablesListView = getView().findViewById(R.id.tables_list_view);
+        //tablesListView.setAdapter(listAdapter);
     }
 
 }
