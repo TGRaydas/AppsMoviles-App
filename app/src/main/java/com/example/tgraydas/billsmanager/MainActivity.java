@@ -1,9 +1,12 @@
 package com.example.tgraydas.billsmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -179,8 +183,8 @@ implements NavigationView.OnNavigationItemSelectedListener,
         });
     }
 
-    public void getDesks(final ArrayList<Desk> deskList){
-        networkManager.getProducts(new Response.Listener<JSONObject>() {
+    public void getDesks(final ArrayList<Desk> deskList, final AllTablesFragment fragment){
+        networkManager.getDesks(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 JSONArray data = response.optJSONArray("0");
@@ -193,8 +197,9 @@ implements NavigationView.OnNavigationItemSelectedListener,
                     } catch (JSONException e) {
 
                     }
-
                 }
+                fragment.populateAllTables(deskList);
+
 
             }
         }, new Response.ErrorListener() {
@@ -204,9 +209,6 @@ implements NavigationView.OnNavigationItemSelectedListener,
             }
         });
     }
-
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -222,6 +224,8 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 fragmentTransaction.replace(R.id.fragment_container, allTablesFragment, allTablesFragment.toString());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                ArrayList<Desk> tables = new ArrayList<>();
+                getDesks(tables, allTablesFragment);
             } else if (id == R.id.nav_waiter_tables) {
                 MyTablesFragment myTablesFragment = new MyTablesFragment();
                 myTablesFragment.setArguments(getIntent().getExtras());

@@ -2,12 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tgraydas.billsmanager.MyTablesFragment">
+    tools:context="com.example.tgraydas.billsmanager.MyTablesFragment"
+    android:background="#B2DFDB">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text=" Mis Mesas"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/fragment_my_tables" />
 
 </FrameLayout>

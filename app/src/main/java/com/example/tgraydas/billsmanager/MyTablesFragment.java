@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import java.util.List;
 
 
 public class MyTablesFragment extends Fragment {
-    public static final String ARG_TABLE_NUMBER = "";
+    public static final String FRAGMENT = "mytables";
+    private Context context;
 
     private String mTableNumber;
 
@@ -64,4 +68,11 @@ public class MyTablesFragment extends Fragment {
     public interface OnMyTablesFragmentInteractionListener {
         void onMyTablesFragmentInteraction(Uri uri);
     }
+
+    public void populateMyTables(List<Desk> tables){
+        ListAdapter listAdapter = new TablesListAdapter(this, context, tables);
+        ListView tablesListView = getView().findViewById(R.id.tables_list_view);
+        tablesListView.setAdapter(listAdapter);
+    }
+
 }
