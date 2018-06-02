@@ -13,15 +13,13 @@ import android.view.ViewGroup;
 import com.example.tgraydas.billsmanager.dummy.DummyContent;
 import com.example.tgraydas.billsmanager.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class TablesFragment extends Fragment {
+public class AllTablesFragment extends Fragment{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -33,13 +31,14 @@ public class TablesFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TablesFragment() {
+    public AllTablesFragment() {
+
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TablesFragment newInstance(int columnCount) {
-        TablesFragment fragment = new TablesFragment();
+    public static AllTablesFragment newInstance(int columnCount) {
+        AllTablesFragment fragment = new AllTablesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -91,6 +90,7 @@ public class TablesFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

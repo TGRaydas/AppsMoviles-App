@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OrderTableFragment.OnFragmentInteractionListener} interface
+ * {@link MyTablesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link OrderTableFragment#newInstance} factory method to
+ * Use the {@link MyTablesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderTableFragment extends Fragment {
+public class MyTablesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,7 +32,7 @@ public class OrderTableFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public OrderTableFragment() {
+    public MyTablesFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +43,11 @@ public class OrderTableFragment extends Fragment {
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @param mTableNumber Parameter 3.
-     * @return A new instance of fragment OrderTableFragment.
+     * @return A new instance of fragment MyTablesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrderTableFragment newInstance(String param1, String param2, String mTableNumber) {
-        OrderTableFragment fragment = new OrderTableFragment();
+    public static MyTablesFragment newInstance(String param1, String param2, String mTableNumber) {
+        MyTablesFragment fragment = new MyTablesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,19 +59,13 @@ public class OrderTableFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-            mTableNumber = getArguments().getString(ARG_TABLE_NUMBER);
-
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order_table, container, false);
+        return inflater.inflate(R.layout.fragment_my_tables, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -85,10 +79,7 @@ public class OrderTableFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            this.mListener = (OnFragmentInteractionListener) context;
         }
     }
 
