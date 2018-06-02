@@ -3,6 +3,7 @@ package com.example.tgraydas.billsmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,7 +31,9 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
-implements NavigationView.OnNavigationItemSelectedListener {
+implements NavigationView.OnNavigationItemSelectedListener,
+        MyTablesFragment.OnMyTablesFragmentInteractionListener
+{
 
     private NetworkManager networkManager;
     private SharedPreferences sharedPreferences;
@@ -169,4 +172,8 @@ implements NavigationView.OnNavigationItemSelectedListener {
         return true;
     }
 
+    @Override
+    public void onMyTablesFragmentInteraction(Uri uri) {
+
+    }
 }
