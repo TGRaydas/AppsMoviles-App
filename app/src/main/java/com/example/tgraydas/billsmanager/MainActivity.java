@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -171,7 +172,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
                 System.out.println(error.getMessage());
             }
         });
-        while()
     }
 
     public void getDesks(final ArrayList<Desk> deskList){
