@@ -29,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    private static final String BASE_URL = "http://192.168.0.34:3000/";
+    private static final String BASE_URL = "http://18.188.109.236/";
 
     private static String token =  "";
 

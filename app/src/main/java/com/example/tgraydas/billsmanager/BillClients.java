@@ -1,14 +1,17 @@
 package com.example.tgraydas.billsmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,12 +23,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BillClients extends AppCompatActivity {
+    private static final String TAG = "Y EL NUMERO ES.....!!!";
     NetworkManager networkManager;
     Desk desk;
     ProductsGridAdapter productsGridAdapter;
     ProductsSpinnerAdapter productsSpinnerAdapter;
     ArrayList<Product> billProductList = new ArrayList<>();
     ArrayList<Product> productList = new ArrayList<>();
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,11 @@ public class BillClients extends AppCompatActivity {
                 addProductToBill(spinner, productsGridAdapter);
             }
         });
+
+        int extras = getIntent().getIntExtra("Desk", 0);
+        Log.d(TAG, "onCreate: " + extras);
+        TextView tablesBill = (TextView) findViewById(R.id.table_name_bills_client_tx);
+        tablesBill.setText(String.format("Mesa %d", extras));
     }
 
     public void getProducts(final ArrayList<Product> productList, final GridView gridView, final Spinner spinner) {
