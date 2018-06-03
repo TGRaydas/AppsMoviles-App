@@ -29,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    private static final String BASE_URL = "http://18.188.109.236/";
+    private static final String BASE_URL = "http://192.168.0.17:3000/";
 
     private static String token =  "";
 
@@ -110,6 +110,12 @@ public class NetworkManager {
         makeApiCall(Request.Method.GET, url, null,listener, errorListener);
     }
 
+    public void getMyDesks(Response.Listener<JSONObject> listener,
+                           Response.ErrorListener errorListener){
+        String url = BASE_URL + "my_desks/?token=" + token;
+        makeApiCall(Request.Method.GET, url, null,listener, errorListener);
+    }
+
     public void getProducts(Response.Listener<JSONObject> listener,
                             Response.ErrorListener errorListener){
 
@@ -117,21 +123,22 @@ public class NetworkManager {
         makeApiCall(Request.Method.GET, url, null,listener, errorListener);
     }
     public void createBill(Response.Listener<JSONObject> listener,
-                           Response.ErrorListener errorListener, ArrayList<Product> products, Desk desk) throws JSONException {
+                           Response.ErrorListener errorListener, ArrayList<Product> products, int desk) throws JSONException {
         JSONObject payload = new JSONObject();
         JSONArray array = new JSONArray();
         for (int i = 0; i < products.size(); i++){
             JSONObject obj = new JSONObject();
-            obj.put("id", desk.id);
+            obj.put("id", products.get(i).id);
             array.put(obj);
         }
 
         String url = BASE_URL + "create_bill";
         JSONObject obj = new JSONObject();
-        obj.put("id", desk.id);
-        obj.put("number", desk.id);
+        obj.put("id", desk);
+        obj.put("number", desk);
         payload.put("desk", obj);
         payload.put("products", array);
+        payload.put("token", token);
         makeApiCall(Request.Method.POST, url, payload, listener, errorListener);
     }
     private void makeApiCall(int method, String url, JSONObject payload, Response.Listener<JSONObject> listener,

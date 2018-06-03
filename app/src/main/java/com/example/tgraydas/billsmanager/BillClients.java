@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class BillClients extends AppCompatActivity {
     private static final String TAG = "Y EL NUMERO ES.....!!!";
     NetworkManager networkManager;
-    Desk desk;
     ProductsGridAdapter productsGridAdapter;
     ProductsSpinnerAdapter productsSpinnerAdapter;
     ArrayList<Product> billProductList = new ArrayList<>();
@@ -49,10 +48,21 @@ public class BillClients extends AppCompatActivity {
             }
         });
 
-        int extras = getIntent().getIntExtra("Desk", 0);
+        final int extras = getIntent().getIntExtra("Desk", 0);
         Log.d(TAG, "onCreate: " + extras);
         TextView tablesBill = (TextView) findViewById(R.id.table_name_bills_client_tx);
         tablesBill.setText(String.format("Mesa %d", extras));
+        button = findViewById(R.id.create_bill_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    createBill(billProductList, extras);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void getProducts(final ArrayList<Product> productList, final GridView gridView, final Spinner spinner) {
@@ -97,5 +107,18 @@ public class BillClients extends AppCompatActivity {
         productsGridAdapter.notifyDataSetChanged();
     }
 
+    public void createBill(final ArrayList<Product> products, int desk) throws JSONException {
+        networkManager.createBill(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, products, desk);
+    }
 
 }

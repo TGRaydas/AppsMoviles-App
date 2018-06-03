@@ -58,7 +58,8 @@ implements NavigationView.OnNavigationItemSelectedListener,
         networkManager = NetworkManager.getInstance(this);
         Button button = findViewById(R.id.button);
         ArrayList<Product> productList = new ArrayList<>();
-        getProducts(productList);
+        ArrayList<Desk> deskList = new ArrayList<>();
+        getMyDesks(deskList);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,24 +122,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
     }
 
-    public void createBill(final ArrayList<Product> products, final Desk desk, final ArrayList<Bill> bill) throws JSONException {
-        networkManager.createBill(new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try{
-                    Bill bills = new Bill(response.getInt("id"), desk, products);
-                    bill.add(bills);
-                } catch (JSONException e){
 
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }, products, desk);
-    }
 
     public void login(){
         try{
@@ -185,6 +169,33 @@ implements NavigationView.OnNavigationItemSelectedListener,
             }
         });
     }
+
+
+    public void getMyDesks(final ArrayList<Desk> deskList){
+        networkManager.getMyDesks(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONArray data = response.optJSONArray("0");
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        int id = data.getJSONObject(i).optInt("id");
+                        int number = data.getJSONObject(i).optInt("number");
+                        Desk desk = new Desk(id, number);
+                        deskList.add(desk);
+                    } catch (JSONException e) {
+
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }
+
 
     public void getDesks(final ArrayList<Desk> deskList, final AllTablesFragment fragment){
         networkManager.getDesks(new Response.Listener<JSONObject>() {
