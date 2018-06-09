@@ -65,7 +65,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BillClients.class);
+                Intent intent = new Intent(getApplicationContext(), SplitBillActivity.class);
                 intent.putExtra("Desk", 2);
 
                 startActivity(intent);

@@ -1,6 +1,6 @@
 package com.example.tgraydas.billsmanager;
-
-public class Product {
+import java.io.Serializable;
+public class Product implements Serializable{
     int id;
     int price;
     String name;
