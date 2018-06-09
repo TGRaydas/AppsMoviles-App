@@ -29,6 +29,8 @@ public class BillClients extends AppCompatActivity {
     ProductsSpinnerAdapter productsSpinnerAdapter;
     ArrayList<Product> billProductList = new ArrayList<>();
     ArrayList<Product> productList = new ArrayList<>();
+    int Desk_id;
+    boolean Receive = false;
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +49,12 @@ public class BillClients extends AppCompatActivity {
                 addProductToBill(spinner, productsGridAdapter);
             }
         });
-
-        final int extras = getIntent().getIntExtra("Desk", 0);
+        final int extras = getIntent().getIntExtra("Desk", -1);
+        Desk_id = getIntent().getIntExtra("Desk", -1);
         Log.d(TAG, "onCreate: " + extras);
         TextView tablesBill = (TextView) findViewById(R.id.table_name_bills_client_tx);
         tablesBill.setText(String.format("Mesa %d", extras));
+        loadProductsIfHave();
         button = findViewById(R.id.create_bill_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +105,39 @@ public class BillClients extends AppCompatActivity {
 
     }
 
+    public void loadProductsIfHave(){
+        networkManager.getBill(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray data = response.optJSONArray("0");
+                    for (int i = 0; i < data.length(); i++){
+                        int id = data.getJSONObject(i).optInt("id");
+                        String name = data.getJSONObject(i).optString("name");
+                        int price = data.getJSONObject(i).optInt("price");
+                        String detail = data.getJSONObject(i).optString("detail");
+                        Product product = new Product(id, price, name, detail);
+                        billProductList.add(product);
+                    }
+
+                } catch (JSONException e) {
+
+                }
+                new Runnable() {
+                    public void run() {
+                        productsGridAdapter.notifyDataSetChanged();
+                    }
+                };
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, Desk_id);
+
+    }
+
     public void removeProductFromBill(int position){
         billProductList.remove(position);
         productsGridAdapter.notifyDataSetChanged();
@@ -120,5 +156,7 @@ public class BillClients extends AppCompatActivity {
             }
         }, products, desk);
     }
+
+
 
 }

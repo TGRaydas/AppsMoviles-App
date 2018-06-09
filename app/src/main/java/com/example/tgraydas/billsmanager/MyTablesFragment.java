@@ -28,7 +28,6 @@ public class MyTablesFragment extends Fragment {
 
     public static MyTablesFragment newInstance() {
         MyTablesFragment fragment = new MyTablesFragment();
-        ;
         return fragment;
     }
 
