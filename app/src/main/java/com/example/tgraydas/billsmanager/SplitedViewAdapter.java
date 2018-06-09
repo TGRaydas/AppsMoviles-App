@@ -30,14 +30,14 @@ public class SplitedViewAdapter extends BaseAdapter {
 
     // 1
     public SplitedViewAdapter(Context context, Map<Integer, ArrayList<Product>> splitedBill) {
-        mContext = context;
-        splitedBill = splitedBill;
+        this.mContext = context;
+        this.splitedBill = splitedBill;
     }
 
     // 2
     @Override
     public int getCount() {
-        return 0;
+        return splitedBill.size();
     }
 
     // 3
@@ -55,25 +55,26 @@ public class SplitedViewAdapter extends BaseAdapter {
     // 5
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View listItem = convertView;
-        if(listItem == null) {
+        View gridView = convertView;
+        if (convertView == null) {
             layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            listItem = layoutInflater.inflate(R.layout.client_products_splited, null);
-        }
-        ListView listView = (ListView) listItem.findViewById(R.id.product_client_list);
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.product_in_splited_view, R.id.name,);
-        TextView textView = (TextView) listItem.findViewById(R.id.user_number2);
-        TextView price = (TextView) listItem.findViewById(R.id.price_total);
-        textView.setText("Usuario " + splitedBill.get(position));
-        int total = 0;
-        for(int i = 0; i < splitedBill.get(position).size(); i++){
-            total += splitedBill.get(position).get(i).price;
-        }
-        price.setText("$ " + Integer.toString(total));
+            gridView = layoutInflater.inflate(R.layout.client_products_splited, null);
+            TextView textView = gridView.findViewById(R.id.user_number2);
+            textView.setText("Usuario" + Integer.toString(position));
+            textView = gridView.findViewById(R.id.price_total);
+            String price_info = "Price: $" + Integer.toString(1000);
+            textView.setText(price_info);
+            return gridView;
 
-        return listItem;
-
+        }
+        else {
+            TextView textView = gridView.findViewById(R.id.user_number2);
+            textView.setText("Usuario " + Integer.toString(position + 1));
+            textView = gridView.findViewById(R.id.price_total);
+            String price_info = "Price: $" + Integer.toString(1000);
+            textView.setText(price_info);
+            return convertView;
+        }
     }
-
 }
 
