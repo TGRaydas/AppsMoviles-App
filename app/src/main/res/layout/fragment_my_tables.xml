@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.tgraydas.billsmanager.MyTablesFragment"
-    android:background="#B2DFDB">
+    android:background="#B2DFDB"
+    android:id="@+id/my_tables_fragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -12,8 +13,9 @@
         android:textSize="20dp"
         android:textStyle="bold"/>
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/fragment_my_tables" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:id="@+id/my_tables_list_view"/>
 
 </FrameLayout>

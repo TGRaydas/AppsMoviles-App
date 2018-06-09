@@ -42,7 +42,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener,
-        AllTablesFragment.takeTable
+        AllTablesFragment.takeTable,
+        MyTablesFragment.takeMyTable
 {
 
     private NetworkManager networkManager;
@@ -59,7 +60,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
         Button button = findViewById(R.id.button);
         ArrayList<Product> productList = new ArrayList<>();
         ArrayList<Desk> deskList = new ArrayList<>();
-        getMyDesks(deskList);
+        //getMyDesks(deskList);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +172,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
     }
 
 
-    public void getMyDesks(final ArrayList<Desk> deskList){
+    public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment){
         networkManager.getMyDesks(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -186,6 +187,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
                     }
                 }
+                myTablesFragment.populateMyTables(deskList);
 
             }
         }, new Response.ErrorListener() {
@@ -248,6 +250,8 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 fragmentTransaction.replace(R.id.fragment_container, myTablesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                ArrayList<Desk> tables = new ArrayList<>();
+                getMyDesks(tables, myTablesFragment);
             } else if (id == R.id.nav_logout) {
                     /* LOGOUT */
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -265,6 +269,13 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
     @Override
     public void takeTableListener(Desk desk) {
+        Intent goToOrderWithTable = new Intent(getApplicationContext(), BillClients.class);
+        goToOrderWithTable.putExtra("Desk", desk.id);
+        startActivity(goToOrderWithTable);
+    }
+
+    @Override
+    public void takeMyTableListener(Desk desk) {
         Intent goToOrderWithTable = new Intent(getApplicationContext(), BillClients.class);
         goToOrderWithTable.putExtra("Desk", desk.id);
         startActivity(goToOrderWithTable);
