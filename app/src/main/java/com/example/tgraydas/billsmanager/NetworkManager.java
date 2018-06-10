@@ -29,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    private static final String BASE_URL = "http://192.168.0.17:3000/";
+    private static final String BASE_URL = "http://18.188.109.236";
 
     private static String token =  "";
 
@@ -104,10 +104,10 @@ public class NetworkManager {
     }
 
     public void killBill(Response.Listener<JSONObject> listener,
-                         Response.ErrorListener errorListener, Bill bill) throws JSONException {
+                         Response.ErrorListener errorListener, int bill) throws JSONException {
         String url = BASE_URL + "kill_bill";
         JSONObject obj = new JSONObject();
-        obj.put("id", bill.id);
+        obj.put("id", bill);
         makeApiCall(Request.Method.POST, url, obj,listener, errorListener);
     }
     public void getDesks(Response.Listener<JSONObject> listener,
@@ -147,6 +147,9 @@ public class NetworkManager {
         payload.put("products", array);
         payload.put("token", token);
         makeApiCall(Request.Method.POST, url, payload, listener, errorListener);
+    }
+    public void setToken(String data){
+        token = data;
     }
     private void makeApiCall(int method, String url, JSONObject payload, Response.Listener<JSONObject> listener,
                              Response.ErrorListener errorListener){

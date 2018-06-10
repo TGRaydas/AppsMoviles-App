@@ -55,17 +55,21 @@ public class LoginActivity extends AppCompatActivity {
                     networkManager.login(new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("token", "login");
-                            editor.commit();
-                            Toast initialized_message =
-                                    Toast.makeText(getApplicationContext(),
-                                            "Has iniciado sesion :D", Toast.LENGTH_SHORT);
-                            initialized_message.show();
+                            try{
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("token", response.getString("Authenticate"));
+                                editor.commit();
+                                Toast initialized_message =
+                                        Toast.makeText(getApplicationContext(),
+                                                "Has iniciado sesion :D", Toast.LENGTH_SHORT);
+                                initialized_message.show();
 
-                            Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
-                            LoginActivity.this.startActivity(userAreaIntent);
-                            finish();
+                                Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                LoginActivity.this.startActivity(userAreaIntent);
+                                finish();
+                            } catch (JSONException e){
+
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override

@@ -103,7 +103,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 getString(R.string.loginpreferences), Context.MODE_PRIVATE);
 
         String token = sharedPreferences.getString("token", "");
-        System.out.println(token);
+
 
         if(Objects.equals(token, "")) {
             /* descomentar cuando este listo el login */
@@ -116,6 +116,10 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
             initialized_message.show();
         }
+        else{
+            networkManager.setToken(token);
+        }
+
         setTitle("Bills Manager");
 
 

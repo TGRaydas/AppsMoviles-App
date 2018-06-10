@@ -30,7 +30,6 @@ public class BillClients extends AppCompatActivity {
     ArrayList<Product> billProductList = new ArrayList<>();
     ArrayList<Product> productList = new ArrayList<>();
     int Desk_id;
-    boolean Receive = false;
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +63,20 @@ public class BillClients extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        button = findViewById(R.id.lets_split);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                letsSplit();
+            }
+        });
+        button = findViewById(R.id.lets_pay);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payed();
             }
         });
     }
@@ -119,6 +132,9 @@ public class BillClients extends AppCompatActivity {
                         Product product = new Product(id, price, name, detail);
                         billProductList.add(product);
                     }
+                    Button button =  findViewById(R.id.create_bill_button);
+                    button.setVisibility(View.INVISIBLE);
+                    productsGridAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
 
@@ -127,7 +143,10 @@ public class BillClients extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Button button =  findViewById(R.id.lets_pay);
+                button.setVisibility(View.INVISIBLE);
+                button = findViewById(R.id.lets_split);
+                button.setVisibility(View.INVISIBLE);
             }
         }, Desk_id);
 
@@ -142,7 +161,9 @@ public class BillClients extends AppCompatActivity {
         networkManager.createBill(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -152,6 +173,30 @@ public class BillClients extends AppCompatActivity {
         }, products, desk);
     }
 
+
+    public void letsSplit(){
+        Intent intent = new Intent(this, SplitBillActivity.class);
+        intent.putExtra("Desk", Desk_id);
+    }
+
+    public void payed(){
+        try{
+            networkManager.killBill(new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }}, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }, Desk_id);
+        } catch (JSONException e){
+
+        }
+    }
 
 
 }
