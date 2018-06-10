@@ -123,11 +123,6 @@ public class BillClients extends AppCompatActivity {
                 } catch (JSONException e) {
 
                 }
-                new Runnable() {
-                    public void run() {
-                        productsGridAdapter.notifyDataSetChanged();
-                    }
-                };
             }
         }, new Response.ErrorListener() {
             @Override
