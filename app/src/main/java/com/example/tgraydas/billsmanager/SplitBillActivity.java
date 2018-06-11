@@ -61,6 +61,7 @@ public class SplitBillActivity extends AppCompatActivity {
                 readyOnClick();
             }
         });
+
     }
 
     public void changeView(){

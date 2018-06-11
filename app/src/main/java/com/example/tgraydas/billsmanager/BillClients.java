@@ -177,6 +177,7 @@ public class BillClients extends AppCompatActivity {
     public void letsSplit(){
         Intent intent = new Intent(this, SplitBillActivity.class);
         intent.putExtra("Desk", Desk_id);
+        startActivity(intent);
     }
 
     public void payed(){
