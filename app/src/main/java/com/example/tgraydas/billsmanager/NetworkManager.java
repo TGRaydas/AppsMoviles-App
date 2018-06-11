@@ -98,7 +98,7 @@ public class NetworkManager {
     }
 
     public void getBill(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, int desk){
-        String url = BASE_URL + "/desks/bills/" + Integer.toString(desk);
+        String url = BASE_URL + "desks/bills/" + Integer.toString(desk);
         makeApiCall(Request.Method.GET, url, null,listener, errorListener);
 
     }
