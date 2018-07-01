@@ -145,7 +145,7 @@ public class BillClients extends AppCompatActivity {
                         String detail = data.getJSONObject(i).optString("detail");
                         URL url;
                         try {
-                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            url = new URL(new URL(networkManager.BASE_URL), data.getJSONObject(i).optString("img_url"));
                             Product product = new Product(id, price, name, detail, url);
                             billProductList.add(product);
                             System.out.println("Se agrego");

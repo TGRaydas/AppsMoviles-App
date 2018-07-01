@@ -65,7 +65,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
         networkManager = NetworkManager.getInstance(this);
         ArrayList<Product> productList = new ArrayList<>();
         ArrayList<Desk> deskList = new ArrayList<>();
-        getProducts(productList);
+        getDishOfDay(productList);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -106,16 +106,6 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
         setTitle("Bills Manager");
 
-
-        //int random = (int) (Math.random() * productList.size());
-        //Product dishOfDay = (Product) productList.get(random);
-
-        TextView dishOfDayInfo = (TextView) findViewById(R.id.dishofday_information_textview);
-        //dishOfDayInfo.setText("Nombre: " + dishOfDay.name + "\n" + "Precio: " + dishOfDay.price);
-        /* Dish of Day */
-        glideImageViewDishOfDay = (GlideImageView)findViewById(R.id.glide_image_content_main);
-        glideImageViewDishOfDay.loadImageUrl("https://www.white-ibiza.com/wp-content/uploads/dish-of-the-day-ushuaia-1.jpg");
-
     }
 
 
@@ -141,7 +131,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
         }
     }
 
-    public void getProducts(final ArrayList<Product> productList) {
+    public void getDishOfDay(final ArrayList<Product> productList) {
         networkManager.getProducts(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -154,7 +144,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
                         String detail = data.getJSONObject(i).optString("detail");
                         URL url;
                         try {
-                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            url = new URL(new URL(networkManager.BASE_URL), data.getJSONObject(i).optString("img_url"));
                             Product product = new Product(id, price, name, detail, url);
                             productList.add(product);
                         }catch (MalformedURLException e){
@@ -165,6 +155,14 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 } catch (JSONException e) {
 
                 }
+                int random = (int) (Math.random() * productList.size());
+                Product dishOfDay = (Product) productList.get(random);
+
+                TextView dishOfDayInfo = (TextView) findViewById(R.id.dishofday_information_textview);
+                dishOfDayInfo.setText("Nombre: \n" + dishOfDay.name + "\n" + "Precio: $" + dishOfDay.price);
+                /* Dish of Day */
+                glideImageViewDishOfDay = (GlideImageView)findViewById(R.id.glide_image_content_main);
+                glideImageViewDishOfDay.loadImageUrl(dishOfDay.url.toString());
 
             }
         }, new Response.ErrorListener() {
