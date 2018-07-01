@@ -1,5 +1,6 @@
 package com.example.tgraydas.billsmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -83,6 +84,12 @@ public class SplitBillActivity extends AppCompatActivity {
     }
 
     public void loadProductsIfHave(){
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
         networkManager.getBill(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -98,15 +105,17 @@ public class SplitBillActivity extends AppCompatActivity {
                             url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
                             Product product = new Product(id, price, name, detail, url);
                             allProduct.add(product);
+                            System.out.println("Added");
                         }catch (MalformedURLException e){
 
                         }
-
                     }
+
 
                 } catch (JSONException e) {
 
                 }
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override

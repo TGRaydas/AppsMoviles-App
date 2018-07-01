@@ -1,6 +1,7 @@
 package com.example.tgraydas.billsmanager;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,6 +90,12 @@ public class BillClients extends AppCompatActivity {
     }
 
     public void getProducts(final ArrayList<Product> productList, final GridView gridView, final Spinner spinner) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
         networkManager.getProducts(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -111,7 +118,7 @@ public class BillClients extends AppCompatActivity {
                     }
                     productsSpinnerAdapter = new ProductsSpinnerAdapter(getApplicationContext(), R.id.spinner ,productList);
                     spinner.setAdapter(productsSpinnerAdapter);
-
+                    progress.dismiss();
 
                 } catch (JSONException e) {
 
@@ -201,6 +208,11 @@ public class BillClients extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+                else{
+                    Intent intent = new Intent(getApplicationContext(), SplitBillActivity.class);
+                    intent.putExtra("Desk", Desk_id);
+                    startActivity(intent);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -212,13 +224,12 @@ public class BillClients extends AppCompatActivity {
 
     public void letsSplit(){
         try {
+            final ProgressDialog progress = new ProgressDialog(this);
             updateBill(billProductList, Desk_id, true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(this, SplitBillActivity.class);
-        intent.putExtra("Desk", Desk_id);
-        startActivity(intent);
+
     }
 
     public void payed(){

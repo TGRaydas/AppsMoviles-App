@@ -1,6 +1,7 @@
 package com.example.tgraydas.billsmanager;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -187,6 +188,11 @@ implements NavigationView.OnNavigationItemSelectedListener,
     }
 
     public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment){
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
         networkManager.getMyDesks(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -202,6 +208,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
                     }
                 }
                 myTablesFragment.populateMyTables(deskList);
+                progress.dismiss();
 
             }
         }, new Response.ErrorListener() {
@@ -214,6 +221,12 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
 
     public void getDesks(final ArrayList<Desk> deskList, final AllTablesFragment fragment){
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
         networkManager.getDesks(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -229,6 +242,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
                     }
                 }
                 fragment.populateAllTables(deskList);
+                progress.dismiss();
 
 
             }
