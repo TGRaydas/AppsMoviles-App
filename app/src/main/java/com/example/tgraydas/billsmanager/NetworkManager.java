@@ -29,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    public static final String BASE_URL = "http://192.168.0.17:3000/";
+    public static final String BASE_URL = "http://ec2-18-188-109-236.us-east-2.compute.amazonaws.com/";
 
     private static String token =  "";
 

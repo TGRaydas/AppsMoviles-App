@@ -187,7 +187,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
     }
 
-    public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment){
+    public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment, final Context context){
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -209,12 +209,16 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 }
                 myTablesFragment.populateMyTables(deskList);
                 progress.dismiss();
+                if (deskList.size() == 0){
+                    Toast.makeText(context, "No tienes mesas", Toast.LENGTH_LONG).show();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progress.dismiss();
+                Toast.makeText(context, "No tienes mesas", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -279,7 +283,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 ArrayList<Desk> tables = new ArrayList<>();
-                getMyDesks(tables, myTablesFragment);
+                getMyDesks(tables, myTablesFragment, this);
             } else if (id == R.id.nav_logout) {
                     /* LOGOUT */
                 SharedPreferences.Editor editor = sharedPreferences.edit();
