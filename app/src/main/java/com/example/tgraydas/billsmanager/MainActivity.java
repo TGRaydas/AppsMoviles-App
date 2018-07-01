@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.master.glideimageview.GlideImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener,
@@ -51,6 +54,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
     private NetworkManager networkManager;
     private SharedPreferences sharedPreferences;
     private TextView navHead;
+    GlideImageView glideImageViewDishOfDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +63,9 @@ implements NavigationView.OnNavigationItemSelectedListener,
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         networkManager = NetworkManager.getInstance(this);
-        Button button = findViewById(R.id.button);
         ArrayList<Product> productList = new ArrayList<>();
         ArrayList<Desk> deskList = new ArrayList<>();
-        //getMyDesks(deskList);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SplitBillActivity.class);
-                intent.putExtra("Desk", 2);
-
-                startActivity(intent);
-            }
-        });
-
-        /* NAVIGATION DRAWER */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        getProducts(productList);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,8 +76,8 @@ implements NavigationView.OnNavigationItemSelectedListener,
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View fragmentContainer = findViewById(R.id.fragment_container);
-        if (fragmentContainer != null){
-            if(savedInstanceState != null){
+        if (fragmentContainer != null) {
+            if (savedInstanceState != null) {
                 return;
             }
         }
@@ -107,7 +90,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
         String token = sharedPreferences.getString("token", "");
 
 
-        if(Objects.equals(token, "")) {
+        if (Objects.equals(token, "")) {
             /* descomentar cuando este listo el login */
             Intent goToLoginIntent = new Intent(MainActivity.this, LoginActivity.class);
             MainActivity.this.startActivity(goToLoginIntent);
@@ -117,20 +100,28 @@ implements NavigationView.OnNavigationItemSelectedListener,
                             "Debes Iniciar Sesion!" + ("\ud83d\ude01"), Toast.LENGTH_SHORT);
 
             initialized_message.show();
-        }
-        else{
+        } else {
             networkManager.setToken(token);
         }
 
         setTitle("Bills Manager");
 
 
+        //int random = (int) (Math.random() * productList.size());
+        //Product dishOfDay = (Product) productList.get(random);
+
+        TextView dishOfDayInfo = (TextView) findViewById(R.id.dishofday_information_textview);
+        //dishOfDayInfo.setText("Nombre: " + dishOfDay.name + "\n" + "Precio: " + dishOfDay.price);
+        /* Dish of Day */
+        glideImageViewDishOfDay = (GlideImageView)findViewById(R.id.glide_image_content_main);
+        glideImageViewDishOfDay.loadImageUrl("https://www.white-ibiza.com/wp-content/uploads/dish-of-the-day-ushuaia-1.jpg");
+
     }
+
+
     public void killBill(Bill bill){
 
     }
-
-
 
     public void login(){
         try{
@@ -184,6 +175,18 @@ implements NavigationView.OnNavigationItemSelectedListener,
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
 
     public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment){
         networkManager.getMyDesks(new Response.Listener<JSONObject>() {

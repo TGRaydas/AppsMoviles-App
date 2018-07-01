@@ -80,7 +80,7 @@ public class BillClients extends AppCompatActivity {
             public void onClick(View v) {
                // payed();
                 try {
-                    updateBill(billProductList, extras);
+                    updateBill(billProductList, extras, false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -192,13 +192,15 @@ public class BillClients extends AppCompatActivity {
         }, products, desk);
     }
 
-    public void updateBill(final ArrayList<Product> products, int desk) throws JSONException {
+    public void updateBill(final ArrayList<Product> products, int desk, final boolean justCall) throws JSONException {
         networkManager.updateBill(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                if (!justCall) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -209,6 +211,11 @@ public class BillClients extends AppCompatActivity {
     }
 
     public void letsSplit(){
+        try {
+            updateBill(billProductList, Desk_id, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(this, SplitBillActivity.class);
         intent.putExtra("Desk", Desk_id);
         startActivity(intent);
