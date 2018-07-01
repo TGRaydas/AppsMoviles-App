@@ -33,6 +33,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -159,8 +161,14 @@ implements NavigationView.OnNavigationItemSelectedListener,
                         String name = data.getJSONObject(i).optString("name");
                         int price = data.getJSONObject(i).optInt("price");
                         String detail = data.getJSONObject(i).optString("detail");
-                        Product product = new Product(id, price, name, detail);
-                        productList.add(product);
+                        URL url;
+                        try {
+                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            Product product = new Product(id, price, name, detail, url);
+                            productList.add(product);
+                        }catch (MalformedURLException e){
+
+                        }
                     }
 
                 } catch (JSONException e) {

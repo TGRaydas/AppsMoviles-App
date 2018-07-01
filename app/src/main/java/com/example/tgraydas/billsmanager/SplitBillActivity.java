@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class SplitBillActivity extends AppCompatActivity {
         gridView.setAdapter(productsGridAdapter);
         loadProductsIfHave();
         Button button = (Button) findViewById(R.id.split_button);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,8 +93,15 @@ public class SplitBillActivity extends AppCompatActivity {
                         String name = data.getJSONObject(i).optString("name");
                         int price = data.getJSONObject(i).optInt("price");
                         String detail = data.getJSONObject(i).optString("detail");
-                        Product product = new Product(id, price, name, detail);
-                        allProduct.add(product);
+                        URL url;
+                        try {
+                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            Product product = new Product(id, price, name, detail, url);
+                            allProduct.add(product);
+                        }catch (MalformedURLException e){
+
+                        }
+
                     }
 
                 } catch (JSONException e) {
@@ -122,6 +132,7 @@ public class SplitBillActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ShowSplited.class);
             intent.putExtra("Data", (Serializable) splitedBill);
             intent.putExtra("nClients", nClients);
+            intent.putExtra("desk_id", deskId);
             startActivity(intent);
         }
         else{

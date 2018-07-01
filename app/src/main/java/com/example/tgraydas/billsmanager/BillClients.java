@@ -20,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class BillClients extends AppCompatActivity {
@@ -65,18 +67,23 @@ public class BillClients extends AppCompatActivity {
                 }
             }
         });
-        button = findViewById(R.id.lets_split);
+        button = findViewById(R.id.lets_pay);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 letsSplit();
             }
         });
-        button = findViewById(R.id.lets_pay);
+        button = findViewById(R.id.update);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                payed();
+               // payed();
+                try {
+                    updateBill(billProductList, extras);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -88,12 +95,19 @@ public class BillClients extends AppCompatActivity {
                 try {
                     JSONArray data = response.optJSONArray("0");
                     for (int i = 0; i < data.length(); i++){
+                        System.out.println( data.getJSONObject(i));
                         int id = data.getJSONObject(i).optInt("id");
                         String name = data.getJSONObject(i).optString("name");
                         int price = data.getJSONObject(i).optInt("price");
                         String detail = data.getJSONObject(i).optString("detail");
-                        Product product = new Product(id, price, name, detail);
-                        productList.add(product);
+                        URL url;
+                        try {
+                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            Product product = new Product(id, price, name, detail, url);
+                            productList.add(product);
+                        }catch (MalformedURLException e){
+
+                        }
                     }
                     productsSpinnerAdapter = new ProductsSpinnerAdapter(getApplicationContext(), R.id.spinner ,productList);
                     spinner.setAdapter(productsSpinnerAdapter);
@@ -113,7 +127,7 @@ public class BillClients extends AppCompatActivity {
     }
 
     public void addProductToBill(Spinner spinner, ProductsGridAdapter productsGridAdapter){
-        billProductList.add((Product) spinner.getSelectedItem());
+        billProductList.add(0, (Product) spinner.getSelectedItem());
         productsGridAdapter.notifyDataSetChanged();
 
     }
@@ -129,8 +143,15 @@ public class BillClients extends AppCompatActivity {
                         String name = data.getJSONObject(i).optString("name");
                         int price = data.getJSONObject(i).optInt("price");
                         String detail = data.getJSONObject(i).optString("detail");
-                        Product product = new Product(id, price, name, detail);
-                        billProductList.add(product);
+                        URL url;
+                        try {
+                            url = new URL(new URL("http://192.168.0.17:3000/"), data.getJSONObject(i).optString("img_url"));
+                            Product product = new Product(id, price, name, detail, url);
+                            billProductList.add(product);
+                            System.out.println("Se agrego");
+                        }catch (MalformedURLException e){
+
+                        }
                     }
                     Button button =  findViewById(R.id.create_bill_button);
                     button.setVisibility(View.INVISIBLE);
@@ -144,8 +165,6 @@ public class BillClients extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Button button =  findViewById(R.id.lets_pay);
-                button.setVisibility(View.INVISIBLE);
-                button = findViewById(R.id.lets_split);
                 button.setVisibility(View.INVISIBLE);
             }
         }, Desk_id);
@@ -173,6 +192,21 @@ public class BillClients extends AppCompatActivity {
         }, products, desk);
     }
 
+    public void updateBill(final ArrayList<Product> products, int desk) throws JSONException {
+        networkManager.updateBill(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, products, desk);
+    }
 
     public void letsSplit(){
         Intent intent = new Intent(this, SplitBillActivity.class);

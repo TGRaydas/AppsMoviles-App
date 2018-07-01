@@ -1,17 +1,22 @@
 package com.example.tgraydas.billsmanager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.StringRequest;
+import com.master.glideimageview.GlideImageView;
 
 import org.w3c.dom.Text;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ProductsGridAdapter extends BaseAdapter {
@@ -67,14 +72,31 @@ public class ProductsGridAdapter extends BaseAdapter {
                 }
             });
             textView.setText(price_info);
+            GlideImageView glideImageView = gridView.findViewById(R.id.item_image);
+            glideImageView.loadImageUrl(product.url.toString());
             return gridView;
 
         }
         else {
-            TextView textView = convertView.findViewById(R.id.text_name);
+            gridView = convertView;
+            TextView textView = gridView.findViewById(R.id.text_name);
             textView.setText(product.name);
-            textView = convertView.findViewById(R.id.text_detail);
+            textView = gridView.findViewById(R.id.text_detail);
             textView.setText(product.detail);
+            textView = gridView.findViewById(R.id.price);
+            String price_info = "Price: $" + Integer.toString((product.price));
+            Button button = gridView.findViewById(R.id.delete_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if( mContext instanceof BillClients) {
+                        ((BillClients) mContext).removeProductFromBill(position);
+                    }
+                }
+            });
+            textView.setText(price_info);
+            GlideImageView glideImageView = gridView.findViewById(R.id.item_image);
+            glideImageView.loadImageUrl(product.url.toString());
             return convertView;
         }
     }

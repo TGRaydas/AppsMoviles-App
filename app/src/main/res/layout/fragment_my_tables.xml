@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text=" Mis Mesas"
+        android:textColor="@android:color/black"
         android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -29,7 +29,7 @@ public class NetworkManager {
     private static Context mCtx;
 
 
-    private static final String BASE_URL = "http://18.188.109.236/";
+    private static final String BASE_URL = "http://192.168.0.17:3000/";
 
     private static String token =  "";
 
@@ -140,6 +140,25 @@ public class NetworkManager {
         }
 
         String url = BASE_URL + "create_bill";
+        JSONObject obj = new JSONObject();
+        obj.put("id", desk);
+        obj.put("number", desk);
+        payload.put("desk", obj);
+        payload.put("products", array);
+        payload.put("token", token);
+        makeApiCall(Request.Method.POST, url, payload, listener, errorListener);
+    }
+    public void updateBill(Response.Listener<JSONObject> listener,
+                           Response.ErrorListener errorListener, ArrayList<Product> products, int desk) throws JSONException {
+        JSONObject payload = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < products.size(); i++){
+            JSONObject obj = new JSONObject();
+            obj.put("id", products.get(i).id);
+            array.put(obj);
+        }
+
+        String url = BASE_URL + "update_bill";
         JSONObject obj = new JSONObject();
         obj.put("id", desk);
         obj.put("number", desk);
