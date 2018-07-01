@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText loginEmail = (EditText) findViewById(R.id.login_email);
         final EditText loginPassword = (EditText) findViewById(R.id.login_password);
         final Button loginButton = (Button) findViewById(R.id.login_button);
+        //ProgressBar loginProgressBar = (ProgressBar) findViewById(R.id.login_progressBar);
 
         sharedPreferences = context.getSharedPreferences(
           "loginpreferences", context.MODE_PRIVATE
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 networkManager = NetworkManager.getInstance(getApplicationContext());
                 final String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
@@ -135,6 +139,27 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println(error);
             }
         });
+    }
+
+    class loginAsyncTaks extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            return strings[0];
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+
+        }
     }
 }
 

@@ -11,15 +11,28 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" >
+
+        <com.master.glideimageview.GlideImageView
+            android:id="@+id/glide_image_content_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:error_res="@drawable/ic_error_black_24dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholder_res="@drawable/ic_waiter_serving_a_drink_on_a_tray"
+            app:show_progress="true"
+            tools:ignore="MissingConstraints" />
+    </FrameLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

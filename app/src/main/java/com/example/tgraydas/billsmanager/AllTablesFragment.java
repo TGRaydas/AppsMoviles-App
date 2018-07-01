@@ -22,7 +22,6 @@ public class AllTablesFragment extends Fragment{
 
     private Context context;
 
-    private OnListFragmentInteractionListener mListener;
     private takeTable takeTableListener;
 
     /* CONSTRUCTOR */
@@ -47,7 +46,6 @@ public class AllTablesFragment extends Fragment{
         return view;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -61,12 +59,7 @@ public class AllTablesFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
 
-
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
     }
 
     public void populateAllTables(ArrayList<Desk> tables){
@@ -79,4 +72,6 @@ public class AllTablesFragment extends Fragment{
     public interface takeTable{
         void takeTableListener(Desk desk);
     }
+
+
 }

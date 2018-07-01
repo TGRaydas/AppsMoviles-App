@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.master.glideimageview.GlideImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
     private NetworkManager networkManager;
     private SharedPreferences sharedPreferences;
     private TextView navHead;
+    GlideImageView glideImageViewDishOfDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,11 @@ implements NavigationView.OnNavigationItemSelectedListener,
         Button button = findViewById(R.id.button);
         ArrayList<Product> productList = new ArrayList<>();
         ArrayList<Desk> deskList = new ArrayList<>();
-        //getMyDesks(deskList);
+
+        /*Dish of Day*/
+        glideImageViewDishOfDay = (GlideImageView)findViewById(R.id.glide_image_content_main);
+        glideImageViewDishOfDay.loadImageUrl("https://www.white-ibiza.com/wp-content/uploads/dish-of-the-day-ushuaia-1.jpg");
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,15 +78,6 @@ implements NavigationView.OnNavigationItemSelectedListener,
             }
         });
 
-        /* NAVIGATION DRAWER */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -176,6 +173,19 @@ implements NavigationView.OnNavigationItemSelectedListener,
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
 
     public void getMyDesks(final ArrayList<Desk> deskList, final MyTablesFragment myTablesFragment){
         networkManager.getMyDesks(new Response.Listener<JSONObject>() {
