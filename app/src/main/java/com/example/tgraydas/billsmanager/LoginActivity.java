@@ -1,6 +1,8 @@
 package com.example.tgraydas.billsmanager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,19 +27,24 @@ import static android.widget.Toast.makeText;
 public class LoginActivity extends AppCompatActivity {
 
     private NetworkManager networkManager;
+    private EditText loginEmail;
+    private EditText loginPassword;
+    private Button loginButton;
+    private ProgressBar loginProgressBar;
+    SharedPreferences sharedPreferences;
 
+    @SuppressLint("ApplySharedPref")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         final Context context = getApplicationContext();
-        final SharedPreferences sharedPreferences;
 
-        final EditText loginEmail = (EditText) findViewById(R.id.login_email);
-        final EditText loginPassword = (EditText) findViewById(R.id.login_password);
-        final Button loginButton = (Button) findViewById(R.id.login_button);
-        //ProgressBar loginProgressBar = (ProgressBar) findViewById(R.id.login_progressBar);
+        loginEmail = (EditText) findViewById(R.id.login_email);
+        loginPassword = (EditText) findViewById(R.id.login_password);
+        loginButton = (Button) findViewById(R.id.login_button);
+        loginProgressBar = (ProgressBar) findViewById(R.id.login_progressBar);
 
         sharedPreferences = context.getSharedPreferences(
           "loginpreferences", context.MODE_PRIVATE
@@ -50,12 +57,13 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
+                progress.setTitle("Loading");
+                progress.setMessage("Wait while loading...");
+                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                progress.show();
                 networkManager = NetworkManager.getInstance(getApplicationContext());
-                final String email = loginEmail.getText().toString();
-                String password = loginPassword.getText().toString();
                 try {
-
                     networkManager.login(new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -71,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent userAreaIntent = new Intent(LoginActivity.this, MainActivity.class);
                                 LoginActivity.this.startActivity(userAreaIntent);
                                 finish();
+                                progress.dismiss();
                             } catch (JSONException e){
 
                             }
@@ -101,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                     "ERROR: JSON Exception ->" + e, Toast.LENGTH_SHORT);
                     initialized_message.show();
                     e.printStackTrace();
+                    progress.dismiss();
                 }
             }
         });
@@ -141,26 +151,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    class loginAsyncTaks extends AsyncTask<String, Void, String>{
-        @Override
-        protected void onPreExecute(){
-
-        }
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
-            return strings[0];
-        }
-
-        @Override
-        protected void onPostExecute(String s){
-
-        }
-    }
 }
 
 
