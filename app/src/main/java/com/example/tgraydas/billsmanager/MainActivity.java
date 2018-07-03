@@ -66,7 +66,6 @@ implements NavigationView.OnNavigationItemSelectedListener,
         networkManager = NetworkManager.getInstance(this);
         ArrayList<Product> productList = new ArrayList<>();
         ArrayList<Desk> deskList = new ArrayList<>();
-        getDishOfDay(productList);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -102,6 +101,7 @@ implements NavigationView.OnNavigationItemSelectedListener,
 
             initialized_message.show();
         } else {
+            getDishOfDay(productList);
             networkManager.setToken(token);
         }
 
